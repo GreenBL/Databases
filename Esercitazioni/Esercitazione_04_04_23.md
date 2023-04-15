@@ -43,3 +43,11 @@ CAVALLO DEL FANTINO ‘ERCEVOGIC’;
 
 <span style="background-color: blue">
 PROJ<sub>CA.COD_C, CA.NOME_C</sub> (CA) - REN<sub>COD_C <- CA1.COD_C1, NOME_C <- CA1.NOME_C1</sub> (PROJ<sub>CA1.COD_C1, CA1.NOME_C1</sub> (SEL<sub>CA2.COGNOME_FANTINO2 = 'ERCEGOVIC'</sub> ((CA1 JOIN<sub>CA1.COD_C1 = CO1.REF_C1</sub> CO1) JOIN<sub>CO1.REF_E1 = CO2.REF_E2</sub> (CA2 JOIN<sub>CA2.COD_C2 = CO2.REF_C2</sub> CO2))))
+</span>
+
+
+<text style=color:red>4. </text>SELEZIONARE CODICE E NOME DELLE ESIBIZIONI DOVE HANNO GAREGGIATO TUTTI I CAVALLI;
+
+<span style="background-color: blue">
+ES JOIN<sub>ES.COD_E = CO.REF_E</sub> (PROJ<sub>CO.REF_C, CO.REF_E</sub> CO) / (PROJ<sub>CA.REF_C</sub> (REN<sub>REF_C <- CA.COD_C</sub> (CA)))
+</span>
