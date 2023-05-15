@@ -1,0 +1,69 @@
+-- [[8 MAGGIO]]
+-- Ricorda di refreshare il pannello degli schemi!
+-- creazione tabelle e vincoli di integrita' referenziale
+
+CREATE TABLE Persona (
+	Cod_P INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Cognome VARCHAR(50),
+    Eta INT
+);
+
+CREATE TABLE Oggetto (
+	Cod_O INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Categoria VARCHAR(50)
+);
+
+CREATE TABLE Acquisto (
+	Ref_P INT,
+    Ref_O INT,
+    Data DATE,
+    Prezzo DECIMAL(10, 2),
+    FOREIGN KEY (Ref_P) REFERENCES Persona (Cod_P),
+    FOREIGN KEY (Ref_O) REFERENCES Oggetto (Cod_O)
+);
+
+-- inserimento tuple
+
+INSERT INTO Persona (Cod_P, Nome, Cognome, Eta) VALUES
+(1, 'Marco', 'Rossi', 35),
+(2, 'Paola', 'Bianchi', 27),
+(3, 'Giovanni', 'Verdi', 42);
+
+INSERT INTO Oggetto (Cod_O, Nome, Categoria) VALUES
+(1, 'Televisore', 'Elettronica'),
+(2, 'Divano', 'Arredamento'),
+(3, 'Libro', 'Cultura');
+
+INSERT INTO Acquisto (Ref_P, Ref_O, Data, Prezzo) VALUES
+(1, 1, '2022-04-25', 599.99),
+(2, 2, '2022-05-01', 899.99),
+(3, 1, '2022-01-30', 599.99),
+(3, 2, '2022-05-30', 699.99),
+(3, 3, '2022-04-30', 19.99),
+(1, 2, '2022-05-05', 699.99),
+(2, 3, '2022-04-27', 12.99);
+
+-- PROIEZIONE GENERALE PER VERIFICARE IL CORRETTO INSERIMENTO DELLE TUPLE
+
+SELECT * FROM PERSONA;
+SELECT * FROM ACQUISTO;
+SELECT * FROM OGGETTO;
+
+-- PUNTO 1
+-- SELEZIONARE PER OGNI PERSONA IL PREZZO PIU ALTO PER OGNI ACQUISTO, PROIETTANDO CODICE, NOME E COGNOME
+
+SELECT P.COD_P, P.NOME, P.COGNOME, MAX(A.PREZZO) AS ACQUISTO_PIU_COSTOSO
+FROM PERSONA AS P, ACQUISTO AS A
+WHERE P.COD_P = A.REF_P
+GROUP BY P.COD_P, P.NOME, P.COGNOME;
+
+-- PUNTO 2
+-- TROVARE CODICE NOME E COGNOME DELLE PERSONE CON ETA MAGGIORE DI 40 CHE HANNO FATTO PIU DI UN ACQUISTO NEL 2022
+
+SELECT P.COD_P, P.NOME, P.COGNOME, COUNT(*) AS NUMERO_OGGETTI_ACQUISTATI
+FROM PERSONA AS P, ACQUISTO AS A
+WHERE P.COD_P = A.REF_P AND P.ETA >= 40 AND A.DATA >= '2022-01-01' AND A.DATA <= '2022-12-31'
+GROUP BY P.COD_P, P.NOME, P.COGNOME
+HAVING COUNT(*) > 1;
